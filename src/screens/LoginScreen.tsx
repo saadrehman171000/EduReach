@@ -48,11 +48,6 @@ export default function LoginScreen() {
             <View style={styles.formWrapper}>
               <View style={styles.formContainer}>
                 <View style={styles.form}>
-                <View style={styles.formLogoContainer}>
-                  <View style={styles.formLogo}>
-                    <Text style={styles.formLogoText}>ER</Text>
-                  </View>
-                </View>
                 <Text style={styles.welcomeText}>Welcome Back!</Text>
 
                 {/* Email/Phone Input */}
@@ -115,6 +110,14 @@ export default function LoginScreen() {
                     Don't have an account? Contact Admin
                   </Text>
                 </TouchableOpacity>
+                
+                {/* Admin Access Button */}
+                <TouchableOpacity 
+                  style={styles.adminButton}
+                  onPress={() => (navigation as any).navigate('AdminLogin')}
+                >
+                  <Text style={styles.adminButtonText}>Admin Access</Text>
+                </TouchableOpacity>
                 </View>
               </View>
             </View>
@@ -145,7 +148,7 @@ const styles = StyleSheet.create({
   // Logo Section
   logoSection: {
     alignItems: 'center',
-    marginBottom: theme.spacing['2xl'],
+    marginBottom: theme.spacing.xl,
   },
   logoContainer: {
     width: 70,
@@ -304,5 +307,19 @@ const styles = StyleSheet.create({
     fontSize: theme.typography.fontSize.sm,
     textAlign: 'center',
     lineHeight: theme.typography.lineHeight.sm,
+  },
+  adminButton: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: theme.colors.warning,
+    borderRadius: theme.borderRadius.lg,
+    padding: theme.spacing.md,
+    marginTop: theme.spacing.md,
+    alignItems: 'center',
+  },
+  adminButtonText: {
+    color: theme.colors.warning,
+    fontSize: theme.typography.fontSize.base,
+    fontWeight: '500' as const,
   },
 });
