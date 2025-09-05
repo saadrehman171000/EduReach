@@ -10,6 +10,8 @@ import WorkersListScreen from '../screens/WorkersListScreen';
 import WorkerDetailScreen from '../screens/WorkerDetailScreen';
 import MapScreen from '../screens/MapScreen';
 import ReportsScreen from '../screens/ReportsScreen';
+import SettingsScreen from '../screens/SettingsScreen';
+import AdminProfileScreen from '../screens/AdminProfileScreen';
 
 export type AdminStackParamList = {
   AdminLogin: undefined;
@@ -18,6 +20,8 @@ export type AdminStackParamList = {
   WorkerDetail: undefined;
   Map: undefined;
   Reports: undefined;
+  Settings: undefined;
+  AdminProfile: undefined;
 };
 
 const Stack = createNativeStackNavigator<AdminStackParamList>();
@@ -83,6 +87,20 @@ export default function AdminNavigator() {
           component={ReportsScreen}
           options={{
             title: 'Reports',
+          }}
+        />
+        <Stack.Screen
+          name="Settings"
+          component={SettingsScreen}
+          options={{
+            title: 'Settings',
+          }}
+        />
+        <Stack.Screen
+          name="AdminProfile"
+          component={AdminProfileScreen}
+          options={{
+            title: 'Admin Profile',
           }}
         />
       </Stack.Navigator>

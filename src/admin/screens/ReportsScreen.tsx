@@ -9,7 +9,8 @@ import {
   Dimensions,
 } from 'react-native';
 import { theme } from '../../theme';
-import { Card, EmptyState, LoadingSkeleton } from '../../components';
+import { Card, EmptyState, LoadingSkeleton, Breadcrumbs, SegmentedControl } from '../../components';
+import { ExportModal } from '../components';
 
 const { width } = Dimensions.get('window');
 
@@ -19,6 +20,8 @@ export default function ReportsScreen() {
   const [selectedWorker, setSelectedWorker] = useState('All Workers');
   const [isGenerating, setIsGenerating] = useState(false);
   const [reportData, setReportData] = useState(null);
+  const [showExportModal, setShowExportModal] = useState(false);
+  const [printView, setPrintView] = useState(false);
 
   const reportTypes = ['Attendance', 'Salary', 'Distance', 'Orders'];
   const workerOptions = ['All Workers', 'Ali Ahmed', 'Sarah Khan', 'Ahmed Hassan', 'Fatima Ali'];
@@ -233,6 +236,12 @@ export default function ReportsScreen() {
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
+          <Breadcrumbs
+            items={[
+              { label: 'Home', onPress: () => (navigation as any).navigate('AdminDashboard') },
+              { label: 'Reports', isActive: true },
+            ]}
+          />
           <Text style={styles.title}>Reports</Text>
           <Text style={styles.subtitle}>Generate and export reports</Text>
         </View>
@@ -276,6 +285,19 @@ export default function ReportsScreen() {
             />
           </View>
 
+          {/* Print View Toggle */}
+          <View style={styles.printToggleSection}>
+            <Text style={styles.segmentedLabel}>Print View</Text>
+            <TouchableOpacity 
+              style={styles.printToggle}
+              onPress={() => setPrintView(!printView)}
+            >
+              <Text style={styles.printToggleText}>
+                {printView ? '📄 Print View ON' : '📄 Print View OFF'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+
           <TouchableOpacity style={styles.generateButton} onPress={generateReport}>
             <Text style={styles.generateButtonText}>Generate Report</Text>
           </TouchableOpacity>
@@ -291,17 +313,17 @@ export default function ReportsScreen() {
             <Text style={styles.sectionTitle}>
               {reportType} Report - {selectedMonth}
             </Text>
-            <Card style={styles.reportCard}>
+            <Card style={[styles.reportCard, printView && styles.printCard]}>
               <ReportTable data={reportData} />
             </Card>
 
             {/* Export Bar */}
             <View style={styles.exportBar}>
-              <TouchableOpacity style={styles.exportButton}>
-                <Text style={styles.exportButtonText}>📄 Export CSV</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.exportButton}>
-                <Text style={styles.exportButtonText}>📋 Share PDF</Text>
+              <TouchableOpacity 
+                style={styles.exportButton}
+                onPress={() => setShowExportModal(true)}
+              >
+                <Text style={styles.exportButtonText}>📄 Export Report</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -314,6 +336,16 @@ export default function ReportsScreen() {
             />
           </View>
         )}
+
+        {/* Export Modal */}
+        <ExportModal
+          visible={showExportModal}
+          onClose={() => setShowExportModal(false)}
+          onExport={(config) => {
+            console.log('Export config:', config);
+            // Mock export action
+          }}
+        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -576,5 +608,29 @@ const styles = StyleSheet.create({
   // Empty Section
   emptySection: {
     padding: theme.spacing.lg,
+  },
+
+  // Print View Styles
+  printToggleSection: {
+    marginBottom: theme.spacing.lg,
+  },
+  printToggle: {
+    backgroundColor: theme.colors.gray100,
+    padding: theme.spacing.md,
+    borderRadius: theme.borderRadius.lg,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: theme.colors.gray300,
+  },
+  printToggleText: {
+    fontSize: theme.typography.fontSize.sm,
+    color: theme.colors.textPrimary,
+    fontWeight: '500' as const,
+  },
+  printCard: {
+    backgroundColor: theme.colors.white,
+    borderWidth: 2,
+    borderColor: theme.colors.gray400,
+    ...theme.shadows.none,
   },
 });

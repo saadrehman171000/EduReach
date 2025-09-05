@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { theme } from '../../theme';
-import { Card, EmptyState } from '../../components';
+import { Card, EmptyState, Breadcrumbs } from '../../components';
 
 const { width, height } = Dimensions.get('window');
 
@@ -244,6 +244,12 @@ export default function MapScreen() {
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
+        <Breadcrumbs
+          items={[
+            { label: 'Home', onPress: () => (navigation as any).navigate('AdminDashboard') },
+            { label: 'Map', isActive: true },
+          ]}
+        />
         <Text style={styles.title}>Live Map</Text>
         <Text style={styles.subtitle}>Workers' last known locations (~15 min updates)</Text>
       </View>

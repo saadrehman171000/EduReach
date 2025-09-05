@@ -11,7 +11,8 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { theme } from '../../theme';
-import { Card, EmptyState, LoadingSkeleton } from '../../components';
+import { Card, EmptyState, LoadingSkeleton, Breadcrumbs, SegmentedControl } from '../../components';
+import { AdminBadge } from '../components';
 
 const { width } = Dimensions.get('window');
 
@@ -140,10 +141,14 @@ export default function WorkerDetailScreen() {
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {/* Header / Breadcrumb */}
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => (navigation as any).goBack()}>
-            <Text style={styles.backButton}>← Workers</Text>
-          </TouchableOpacity>
-          <Text style={styles.breadcrumb}>Workers > {workerData.name}</Text>
+          <Breadcrumbs
+            items={[
+              { label: 'Home', onPress: () => (navigation as any).navigate('AdminDashboard') },
+              { label: 'Workers', onPress: () => (navigation as any).navigate('WorkersList') },
+              { label: workerData.name, isActive: true },
+            ]}
+          />
+          <Text style={styles.title}>Worker Details</Text>
           <Text style={styles.subtitle}>{workerData.phone} • {workerData.team}</Text>
         </View>
 
@@ -181,10 +186,11 @@ export default function WorkerDetailScreen() {
             {/* Control Panel */}
             <View style={styles.controlPanel}>
               <Text style={styles.controlTitle}>Mark Today</Text>
-              <SegmentedButton
+              <SegmentedControl
                 options={['Present', 'Absent', 'Half-day', 'Leave']}
                 selected={attendanceStatus}
                 onSelect={setAttendanceStatus}
+                size="sm"
               />
 
               <View style={styles.timeInputs}>
@@ -303,24 +309,12 @@ export default function WorkerDetailScreen() {
           <Text style={styles.cardTitle}>Visits & Orders</Text>
           
           {/* Tabs */}
-          <View style={styles.tabsContainer}>
-            <TouchableOpacity
-              style={[styles.tab, activeTab === 'Visits' && styles.tabActive]}
-              onPress={() => setActiveTab('Visits')}
-            >
-              <Text style={[styles.tabText, activeTab === 'Visits' && styles.tabTextActive]}>
-                Visits
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.tab, activeTab === 'Orders' && styles.tabActive]}
-              onPress={() => setActiveTab('Orders')}
-            >
-              <Text style={[styles.tabText, activeTab === 'Orders' && styles.tabTextActive]}>
-                Orders
-              </Text>
-            </TouchableOpacity>
-          </View>
+          <SegmentedControl
+            options={['Visits', 'Orders']}
+            selected={activeTab}
+            onSelect={setActiveTab}
+            size="sm"
+          />
 
           {/* Tab Content */}
           {activeTab === 'Visits' ? (

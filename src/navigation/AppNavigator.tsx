@@ -21,6 +21,8 @@ import WorkersListScreen from '../admin/screens/WorkersListScreen';
 import WorkerDetailScreen from '../admin/screens/WorkerDetailScreen';
 import MapScreen from '../admin/screens/MapScreen';
 import ReportsScreen from '../admin/screens/ReportsScreen';
+import SettingsScreen from '../admin/screens/SettingsScreen';
+import AdminProfileScreen from '../admin/screens/AdminProfileScreen';
 
 export type RootStackParamList = {
   // Worker Flow
@@ -40,6 +42,8 @@ export type RootStackParamList = {
   WorkerDetail: undefined;
   Map: undefined;
   Reports: undefined;
+  Settings: undefined;
+  AdminProfile: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -171,6 +175,20 @@ export default function AppNavigator() {
           component={ReportsScreen}
           options={{
             title: 'Reports',
+          }}
+        />
+        <Stack.Screen
+          name="Settings"
+          component={SettingsScreen}
+          options={{
+            title: 'Settings',
+          }}
+        />
+        <Stack.Screen
+          name="AdminProfile"
+          component={AdminProfileScreen}
+          options={{
+            title: 'Admin Profile',
           }}
         />
       </Stack.Navigator>

@@ -12,7 +12,8 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { theme } from '../../theme';
-import { Card, EmptyState, LoadingSkeleton } from '../../components';
+import { Card, EmptyState, LoadingSkeleton, Breadcrumbs, SearchBar } from '../../components';
+import { AdminTable, AdminBadge } from '../components';
 
 const { width } = Dimensions.get('window');
 
@@ -162,8 +163,24 @@ export default function WorkersListScreen() {
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.title}>Workers</Text>
-        <Text style={styles.subtitle}>Manage attendance, salary, and activity</Text>
+        <View style={styles.headerContent}>
+          <Breadcrumbs
+            items={[
+              { label: 'Home', onPress: () => (navigation as any).navigate('AdminDashboard') },
+              { label: 'Workers', isActive: true },
+            ]}
+          />
+          <Text style={styles.title}>Workers</Text>
+          <Text style={styles.subtitle}>Manage attendance, salary, and activity</Text>
+        </View>
+        <SearchBar
+          placeholder="Search workers..."
+          variant="inline"
+          onSearch={(query) => {
+            console.log('Searching workers:', query);
+            // Mock search functionality
+          }}
+        />
       </View>
 
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
@@ -200,27 +217,43 @@ export default function WorkersListScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Workers List */}
+        {/* Workers Table */}
         <View style={styles.workersSection}>
           <Text style={styles.sectionTitle}>
             {workersData.length} Workers Found
           </Text>
           
-          {workersData.length === 0 ? (
-            <EmptyState
-              icon="👥"
-              title="No Workers Found"
-              subtitle="Try adjusting your search filters"
-            />
-          ) : (
-            <FlatList
-              data={workersData}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item }) => <WorkerCard worker={item} />}
-              scrollEnabled={false}
-              ItemSeparatorComponent={() => <View style={styles.separator} />}
-            />
-          )}
+          <AdminTable
+            columns={[
+              { key: 'name', title: 'Worker', sortable: true, align: 'left' },
+              { key: 'status', title: 'Status', sortable: true, align: 'center' },
+              { key: 'lastSeen', title: 'Last Seen', sortable: true, align: 'center' },
+              { key: 'kmsMTD', title: 'KMs (MTD)', sortable: true, align: 'right' },
+              { key: 'salaryMTD', title: 'Salary (MTD)', sortable: true, align: 'right' },
+              { key: 'actions', title: 'Actions', sortable: false, align: 'center' },
+            ]}
+            data={workersData.map(worker => ({
+              ...worker,
+              status: <AdminBadge 
+                label={worker.todayStatus} 
+                variant={worker.todayStatus.toLowerCase().replace(' ', '-') as any}
+                size="sm"
+              />,
+              actions: (
+                <TouchableOpacity
+                  style={styles.viewButton}
+                  onPress={() => (navigation as any).navigate('WorkerDetail', { workerId: worker.id })}
+                >
+                  <Text style={styles.viewButtonText}>View</Text>
+                </TouchableOpacity>
+              ),
+            }))}
+            emptyMessage="No workers found"
+            onSort={(column) => {
+              console.log('Sort by:', column);
+              // Mock sorting
+            }}
+          />
         </View>
 
         {/* Bulk Actions Bar */}
@@ -258,7 +291,13 @@ const styles = StyleSheet.create({
   header: {
     padding: theme.spacing.lg,
     backgroundColor: theme.colors.background,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.spacing.lg,
     ...theme.shadows.sm,
+  },
+  headerContent: {
+    flex: 1,
   },
   title: {
     fontSize: theme.typography.fontSize['2xl'],
