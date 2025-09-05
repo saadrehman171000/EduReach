@@ -9,6 +9,8 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { theme } from '../theme';
+// Example usage of reusable components:
+// import { EmptyState, ErrorState, LoadingSkeleton } from '../components';
 
 export default function VisitsScreen() {
   const [formData, setFormData] = useState({
@@ -161,24 +163,40 @@ export default function VisitsScreen() {
         {/* Visit History */}
         <View style={styles.historySection}>
           <Text style={styles.historyTitle}>Visit History</Text>
-          {visitHistory.map((visit) => (
-            <View key={visit.id} style={styles.historyCard}>
-              <View style={styles.historyHeader}>
-                <Text style={styles.historySchoolName}>{visit.schoolName}</Text>
-                <View style={[styles.historyStatusChip, { backgroundColor: getStatusColor(visit.status) }]}>
-                  <Text style={styles.historyStatusText}>{visit.status}</Text>
+          {visitHistory.length > 0 ? (
+            visitHistory.map((visit) => (
+              <View key={visit.id} style={styles.historyCard}>
+                <View style={styles.historyHeader}>
+                  <Text style={styles.historySchoolName}>{visit.schoolName}</Text>
+                  <View style={[styles.historyStatusChip, { backgroundColor: getStatusColor(visit.status) }]}>
+                    <Text style={styles.historyStatusText}>{visit.status}</Text>
+                  </View>
+                </View>
+                <View style={styles.historyDetails}>
+                  <Text style={styles.historyDetailText}>
+                    Samples: {visit.samples}
+                  </Text>
+                  <Text style={styles.historyDetailText}>
+                    Date: {visit.date}
+                  </Text>
                 </View>
               </View>
-              <View style={styles.historyDetails}>
-                <Text style={styles.historyDetailText}>
-                  Samples: {visit.samples}
-                </Text>
-                <Text style={styles.historyDetailText}>
-                  Date: {visit.date}
-                </Text>
-              </View>
+            ))
+          ) : (
+            // Example usage of EmptyState component:
+            // <EmptyState
+            //   icon="📍"
+            //   title="No Visits Yet"
+            //   subtitle="Your logged visits will appear here."
+            //   buttonText="Add First Visit"
+            //   onButtonPress={() => console.log('Add visit pressed')}
+            // />
+            <View style={styles.emptyState}>
+              <Text style={styles.emptyStateIcon}>📍</Text>
+              <Text style={styles.emptyStateTitle}>No Visits Yet</Text>
+              <Text style={styles.emptyStateText}>Your logged visits will appear here.</Text>
             </View>
-          ))}
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -319,5 +337,27 @@ const styles = StyleSheet.create({
   historyDetailText: {
     fontSize: theme.typography.fontSize.sm,
     color: theme.colors.textSecondary,
+  },
+
+  // Empty State (example styles - can be replaced with EmptyState component)
+  emptyState: {
+    alignItems: 'center',
+    paddingVertical: theme.spacing['2xl'],
+  },
+  emptyStateIcon: {
+    fontSize: theme.typography.fontSize['4xl'],
+    marginBottom: theme.spacing.lg,
+  },
+  emptyStateTitle: {
+    fontSize: theme.typography.fontSize.xl,
+    fontWeight: '600' as const,
+    color: theme.colors.textPrimary,
+    marginBottom: theme.spacing.sm,
+    textAlign: 'center',
+  },
+  emptyStateText: {
+    fontSize: theme.typography.fontSize.base,
+    color: theme.colors.textSecondary,
+    textAlign: 'center',
   },
 });

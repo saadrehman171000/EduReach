@@ -9,6 +9,8 @@ import {
   FlatList,
 } from 'react-native';
 import { theme } from '../theme';
+// Example usage of reusable components:
+// import { EmptyState, ErrorState, LoadingSkeleton } from '../components';
 
 export default function GpsLogsScreen() {
   const [selectedFilter, setSelectedFilter] = useState('Today');
@@ -135,6 +137,12 @@ export default function GpsLogsScreen() {
                 .map(([hour, logs]) => renderHourSection(hour, logs))}
             </View>
           ) : (
+            // Example usage of EmptyState component:
+            // <EmptyState
+            //   icon="📍"
+            //   title="No Location Logs"
+            //   subtitle="Location data will appear here when captured during duty hours."
+            // />
             <EmptyState />
           )}
         </View>
