@@ -64,7 +64,7 @@ export default function SalaryScreen() {
           
           <View style={styles.salaryRow}>
             <Text style={styles.salaryLabel}>Base Salary</Text>
-            <Text style={styles.salaryValue}>PKR{salaryData.baseSalary.toLocaleString()}</Text>
+            <Text style={styles.salaryValue}>PKR {salaryData.baseSalary.toLocaleString()}</Text>
           </View>
           
           <View style={styles.salaryRow}>
@@ -74,14 +74,14 @@ export default function SalaryScreen() {
           
           <View style={styles.salaryRow}>
             <Text style={styles.salaryLabel}>Per-Day Rate</Text>
-            <Text style={styles.salaryValue}>PKR{salaryData.perDayRate}</Text>
+            <Text style={styles.salaryValue}>PKR {salaryData.perDayRate}</Text>
           </View>
           
           <View style={styles.divider} />
           
           <View style={styles.salaryRow}>
             <Text style={styles.runningSalaryLabel}>Running Salary (MTD)</Text>
-            <Text style={styles.runningSalaryValue}>PKR{salaryData.runningSalary.toLocaleString()}</Text>
+            <Text style={styles.runningSalaryValue}>PKR {salaryData.runningSalary.toLocaleString()}</Text>
           </View>
         </View>
 
@@ -95,24 +95,24 @@ export default function SalaryScreen() {
             
             <View style={styles.adjustmentRow}>
               <Text style={styles.adjustmentLabel}>Absences ({salaryData.deductions.absences} days)</Text>
-              <Text style={styles.deductionValue}>-PKR{salaryData.deductions.absenceAmount.toLocaleString()}</Text>
+              <Text style={styles.deductionValue}>-PKR {salaryData.deductions.absenceAmount.toLocaleString()}</Text>
             </View>
             
             <View style={styles.adjustmentRow}>
               <Text style={styles.adjustmentLabel}>Half-days ({salaryData.deductions.halfDays} days)</Text>
-              <Text style={styles.deductionValue}>-PKR{salaryData.deductions.halfDayAmount.toLocaleString()}</Text>
+              <Text style={styles.deductionValue}>-PKR {salaryData.deductions.halfDayAmount.toLocaleString()}</Text>
             </View>
             
             {salaryData.deductions.lateArrivals.map((item, index) => (
               <View key={index} style={styles.adjustmentRow}>
                 <Text style={styles.adjustmentLabel}>{item.date} — Late by {item.hours}h → Rs. {item.amount} deduction</Text>
-                <Text style={styles.deductionValue}>-PKR{item.amount}</Text>
+                <Text style={styles.deductionValue}>-PKR {item.amount}</Text>
               </View>
             ))}
             
             <View style={styles.adjustmentRow}>
               <Text style={styles.totalDeductionLabel}>Total Deductions</Text>
-              <Text style={styles.totalDeductionValue}>-PKR{totalDeductions.toLocaleString()}</Text>
+              <Text style={styles.totalDeductionValue}>-PKR {totalDeductions.toLocaleString()}</Text>
             </View>
           </View>
 
@@ -122,17 +122,17 @@ export default function SalaryScreen() {
             
             <View style={styles.adjustmentRow}>
               <Text style={styles.adjustmentLabel}>Overtime</Text>
-              <Text style={styles.additionValue}>+PKR{salaryData.additions.overtime.toLocaleString()}</Text>
+              <Text style={styles.additionValue}>+PKR {salaryData.additions.overtime.toLocaleString()}</Text>
             </View>
             
             <View style={styles.adjustmentRow}>
               <Text style={styles.adjustmentLabel}>Petrol Allowance</Text>
-              <Text style={styles.additionValue}>+PKR{salaryData.additions.petrolAllowance.toLocaleString()}</Text>
+              <Text style={styles.additionValue}>+PKR {salaryData.additions.petrolAllowance.toLocaleString()}</Text>
             </View>
             
             <View style={styles.adjustmentRow}>
               <Text style={styles.totalAdditionLabel}>Total Additions</Text>
-              <Text style={styles.totalAdditionValue}>+PKR{totalAdditions.toLocaleString()}</Text>
+              <Text style={styles.totalAdditionValue}>+PKR {totalAdditions.toLocaleString()}</Text>
             </View>
           </View>
           

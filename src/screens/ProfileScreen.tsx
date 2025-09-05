@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -10,84 +10,175 @@ import {
 import { theme } from '../theme';
 
 export default function ProfileScreen() {
+  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const [selectedLanguage, setSelectedLanguage] = useState('English');
+  const [selectedTheme, setSelectedTheme] = useState('Light');
+
   const profileData = {
-    name: 'Saad Rehman',
-    email: 'saadrehman17100@gmail.com',
+    name: 'John Doe',
     phone: '+92 3150777326',
-    employeeId: 'EMP001',
-    department: 'Education Outreach',
-    joinDate: '2023-01-15',
+    workerId: 'WRK001',
+    publisher: 'Oxford Publishers',
+    city: 'Karachi',
   };
 
-  const menuItems = [
-    { title: 'Personal Information', icon: '👤', action: 'personal' },
-    { title: 'Change Password', icon: '🔒', action: 'password' },
-    { title: 'Notifications', icon: '🔔', action: 'notifications' },
-    { title: 'Privacy Settings', icon: '🛡️', action: 'privacy' },
-    { title: 'Help & Support', icon: '❓', action: 'help' },
-    { title: 'About', icon: 'ℹ️', action: 'about' },
-  ];
+  const languages = ['English', 'Urdu', 'Arabic'];
+  const themes = ['Light', 'Dark'];
+
+  const ToggleSwitch = ({ value, onToggle }: { value: boolean; onToggle: () => void }) => (
+    <TouchableOpacity style={[styles.toggle, value && styles.toggleActive]} onPress={onToggle}>
+      <View style={[styles.toggleThumb, value && styles.toggleThumbActive]} />
+    </TouchableOpacity>
+  );
+
+  const PickerButton = ({ 
+    options, 
+    selectedValue, 
+    onSelect, 
+    placeholder 
+  }: { 
+    options: string[]; 
+    selectedValue: string; 
+    onSelect: (value: string) => void; 
+    placeholder: string; 
+  }) => (
+    <View style={styles.pickerContainer}>
+      {options.map((option) => (
+        <TouchableOpacity
+          key={option}
+          style={[
+            styles.pickerOption,
+            selectedValue === option && styles.pickerOptionSelected,
+          ]}
+          onPress={() => onSelect(option)}
+        >
+          <Text
+            style={[
+              styles.pickerOptionText,
+              selectedValue === option && styles.pickerOptionTextSelected,
+            ]}
+          >
+            {option}
+          </Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+        {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.title}>Profile</Text>
-        </View>
-        
-        <View style={styles.profileCard}>
           <View style={styles.avatarContainer}>
             <View style={styles.avatar}>
               <Text style={styles.avatarText}>JD</Text>
             </View>
           </View>
           <Text style={styles.profileName}>{profileData.name}</Text>
-          <Text style={styles.profileEmail}>{profileData.email}</Text>
-          <Text style={styles.profileRole}>{profileData.department}</Text>
+          <Text style={styles.profileDetails}>{profileData.workerId} • {profileData.phone}</Text>
         </View>
-        
-        <View style={styles.infoCard}>
-          <Text style={styles.infoTitle}>Employee Information</Text>
+
+        {/* Personal Information Card */}
+        <View style={styles.card}>
+          <Text style={styles.cardTitle}>Personal Information</Text>
           <View style={styles.infoList}>
             <View style={styles.infoItem}>
-              <Text style={styles.infoLabel}>Employee ID</Text>
-              <Text style={styles.infoValue}>{profileData.employeeId}</Text>
+              <Text style={styles.infoLabel}>Name</Text>
+              <Text style={styles.infoValue}>{profileData.name}</Text>
             </View>
             <View style={styles.infoItem}>
-              <Text style={styles.infoLabel}>Phone Number</Text>
+              <Text style={styles.infoLabel}>Phone</Text>
               <Text style={styles.infoValue}>{profileData.phone}</Text>
             </View>
             <View style={styles.infoItem}>
-              <Text style={styles.infoLabel}>Join Date</Text>
-              <Text style={styles.infoValue}>
-                {new Date(profileData.joinDate).toLocaleDateString('en-US', {
-                  month: 'long',
-                  day: 'numeric',
-                  year: 'numeric',
-                })}
-              </Text>
+              <Text style={styles.infoLabel}>Publisher/Team</Text>
+              <Text style={styles.infoValue}>{profileData.publisher}</Text>
+            </View>
+            <View style={styles.infoItem}>
+              <Text style={styles.infoLabel}>City</Text>
+              <Text style={styles.infoValue}>{profileData.city}</Text>
             </View>
           </View>
         </View>
-        
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Settings</Text>
-          <View style={styles.menuList}>
-            {menuItems.map((item, index) => (
-              <TouchableOpacity key={index} style={styles.menuItem}>
-                <View style={styles.menuIcon}>
-                  <Text style={styles.menuIconText}>{item.icon}</Text>
-                </View>
-                <Text style={styles.menuTitle}>{item.title}</Text>
-                <Text style={styles.menuArrow}>›</Text>
-              </TouchableOpacity>
-            ))}
+
+        {/* App Settings Card */}
+        <View style={styles.card}>
+          <Text style={styles.cardTitle}>App Settings</Text>
+          
+          <View style={styles.settingItem}>
+            <View style={styles.settingContent}>
+              <Text style={styles.settingLabel}>Notifications</Text>
+              <Text style={styles.settingDescription}>Receive push notifications</Text>
+            </View>
+            <ToggleSwitch 
+              value={notificationsEnabled} 
+              onToggle={() => setNotificationsEnabled(!notificationsEnabled)} 
+            />
+          </View>
+
+          <View style={styles.settingItem}>
+            <View style={styles.settingContent}>
+              <Text style={styles.settingLabel}>Language</Text>
+              <Text style={styles.settingDescription}>App display language</Text>
+            </View>
+            <PickerButton
+              options={languages}
+              selectedValue={selectedLanguage}
+              onSelect={setSelectedLanguage}
+              placeholder="Select Language"
+            />
+          </View>
+
+          <View style={styles.settingItem}>
+            <View style={styles.settingContent}>
+              <Text style={styles.settingLabel}>Theme</Text>
+              <Text style={styles.settingDescription}>App appearance</Text>
+            </View>
+            <PickerButton
+              options={themes}
+              selectedValue={selectedTheme}
+              onSelect={setSelectedTheme}
+              placeholder="Select Theme"
+            />
           </View>
         </View>
-        
+
+        {/* Privacy & Permissions Card */}
+        <View style={styles.card}>
+          <Text style={styles.cardTitle}>Privacy & Permissions</Text>
+          
+          <View style={styles.permissionItem}>
+            <View style={styles.permissionContent}>
+              <Text style={styles.permissionLabel}>Location Permission</Text>
+              <Text style={styles.permissionStatus}>Granted</Text>
+            </View>
+            <View style={[styles.statusBadge, { backgroundColor: theme.colors.success }]}>
+              <Text style={styles.statusBadgeText}>✓</Text>
+            </View>
+          </View>
+
+          <View style={styles.permissionItem}>
+            <View style={styles.permissionContent}>
+              <Text style={styles.permissionLabel}>Camera Permission</Text>
+              <Text style={styles.permissionStatus}>Granted</Text>
+            </View>
+            <View style={[styles.statusBadge, { backgroundColor: theme.colors.success }]}>
+              <Text style={styles.statusBadgeText}>✓</Text>
+            </View>
+          </View>
+
+          <View style={styles.permissionInfo}>
+            <Text style={styles.permissionInfoText}>
+              Your location is logged automatically every ~15 minutes during duty.
+            </Text>
+          </View>
+        </View>
+
+        {/* Log Out Button */}
         <View style={styles.logoutSection}>
           <TouchableOpacity style={styles.logoutButton}>
-            <Text style={styles.logoutButtonText}>Sign Out</Text>
+            <Text style={styles.logoutButtonText}>Log Out</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -103,22 +194,13 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
+
+  // Header
   header: {
-    padding: theme.spacing.lg,
     backgroundColor: theme.colors.background,
-  },
-  title: {
-    fontSize: theme.typography.fontSize['2xl'],
-    fontWeight: '700' as const,
-    color: theme.colors.textPrimary,
-  },
-  profileCard: {
-    backgroundColor: theme.colors.background,
-    margin: theme.spacing.lg,
-    borderRadius: theme.borderRadius.lg,
     padding: theme.spacing.lg,
     alignItems: 'center',
-    ...theme.shadows.md,
+    ...theme.shadows.sm,
   },
   avatarContainer: {
     marginBottom: theme.spacing.md,
@@ -142,30 +224,27 @@ const styles = StyleSheet.create({
     color: theme.colors.textPrimary,
     marginBottom: theme.spacing.xs,
   },
-  profileEmail: {
-    fontSize: theme.typography.fontSize.base,
-    color: theme.colors.textSecondary,
-    marginBottom: theme.spacing.xs,
-  },
-  profileRole: {
+  profileDetails: {
     fontSize: theme.typography.fontSize.sm,
-    color: theme.colors.primary,
-    fontWeight: '500' as const,
+    color: theme.colors.textSecondary,
   },
-  infoCard: {
+
+  // Cards
+  card: {
     backgroundColor: theme.colors.background,
-    marginHorizontal: theme.spacing.lg,
-    marginBottom: theme.spacing.lg,
+    margin: theme.spacing.lg,
     borderRadius: theme.borderRadius.lg,
     padding: theme.spacing.lg,
     ...theme.shadows.sm,
   },
-  infoTitle: {
+  cardTitle: {
     fontSize: theme.typography.fontSize.lg,
     fontWeight: '600' as const,
     color: theme.colors.textPrimary,
-    marginBottom: theme.spacing.md,
+    marginBottom: theme.spacing.lg,
   },
+
+  // Personal Information
   infoList: {
     gap: theme.spacing.md,
   },
@@ -174,8 +253,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: theme.spacing.sm,
-    borderBottomWidth: 1,
-    borderBottomColor: theme.colors.gray100,
   },
   infoLabel: {
     fontSize: theme.typography.fontSize.base,
@@ -186,57 +263,139 @@ const styles = StyleSheet.create({
     fontWeight: '500' as const,
     color: theme.colors.textPrimary,
   },
-  section: {
-    paddingHorizontal: theme.spacing.lg,
-  },
-  sectionTitle: {
-    fontSize: theme.typography.fontSize.lg,
-    fontWeight: '600' as const,
-    color: theme.colors.textPrimary,
-    marginBottom: theme.spacing.md,
-  },
-  menuList: {
-    backgroundColor: theme.colors.background,
-    borderRadius: theme.borderRadius.lg,
-    ...theme.shadows.sm,
-  },
-  menuItem: {
+
+  // App Settings
+  settingItem: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    padding: theme.spacing.lg,
+    paddingVertical: theme.spacing.md,
     borderBottomWidth: 1,
     borderBottomColor: theme.colors.gray100,
   },
-  menuIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: theme.borderRadius.full,
-    backgroundColor: theme.colors.gray100,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: theme.spacing.md,
-  },
-  menuIconText: {
-    fontSize: theme.typography.fontSize.lg,
-  },
-  menuTitle: {
+  settingContent: {
     flex: 1,
+  },
+  settingLabel: {
     fontSize: theme.typography.fontSize.base,
     fontWeight: '500' as const,
     color: theme.colors.textPrimary,
+    marginBottom: theme.spacing.xs,
   },
-  menuArrow: {
-    fontSize: theme.typography.fontSize.xl,
-    color: theme.colors.textTertiary,
+  settingDescription: {
+    fontSize: theme.typography.fontSize.sm,
+    color: theme.colors.textSecondary,
   },
+
+  // Toggle Switch
+  toggle: {
+    width: 50,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: theme.colors.gray300,
+    justifyContent: 'center',
+    paddingHorizontal: 2,
+  },
+  toggleActive: {
+    backgroundColor: theme.colors.primary,
+  },
+  toggleThumb: {
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    backgroundColor: theme.colors.white,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  toggleThumbActive: {
+    alignSelf: 'flex-end',
+  },
+
+  // Picker
+  pickerContainer: {
+    flexDirection: 'row',
+    gap: theme.spacing.sm,
+  },
+  pickerOption: {
+    paddingHorizontal: theme.spacing.md,
+    paddingVertical: theme.spacing.sm,
+    borderRadius: theme.borderRadius.md,
+    borderWidth: 1,
+    borderColor: theme.colors.gray300,
+    backgroundColor: theme.colors.background,
+  },
+  pickerOptionSelected: {
+    backgroundColor: theme.colors.primary,
+    borderColor: theme.colors.primary,
+  },
+  pickerOptionText: {
+    fontSize: theme.typography.fontSize.sm,
+    color: theme.colors.textSecondary,
+  },
+  pickerOptionTextSelected: {
+    color: theme.colors.white,
+    fontWeight: '600' as const,
+  },
+
+  // Permissions
+  permissionItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: theme.spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.gray100,
+  },
+  permissionContent: {
+    flex: 1,
+  },
+  permissionLabel: {
+    fontSize: theme.typography.fontSize.base,
+    fontWeight: '500' as const,
+    color: theme.colors.textPrimary,
+    marginBottom: theme.spacing.xs,
+  },
+  permissionStatus: {
+    fontSize: theme.typography.fontSize.sm,
+    color: theme.colors.textSecondary,
+  },
+  statusBadge: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  statusBadgeText: {
+    color: theme.colors.white,
+    fontSize: theme.typography.fontSize.sm,
+    fontWeight: '600' as const,
+  },
+  permissionInfo: {
+    marginTop: theme.spacing.md,
+    padding: theme.spacing.md,
+    backgroundColor: theme.colors.gray100,
+    borderRadius: theme.borderRadius.md,
+  },
+  permissionInfoText: {
+    fontSize: theme.typography.fontSize.sm,
+    color: theme.colors.textSecondary,
+    textAlign: 'center',
+    lineHeight: theme.typography.lineHeight.sm,
+  },
+
+  // Logout
   logoutSection: {
     padding: theme.spacing.lg,
-    marginTop: theme.spacing.lg,
+    marginBottom: theme.spacing.lg,
   },
   logoutButton: {
     backgroundColor: theme.colors.error,
     borderRadius: theme.borderRadius.lg,
-    padding: theme.spacing.md,
+    padding: theme.spacing.lg,
     alignItems: 'center',
     ...theme.shadows.sm,
   },
