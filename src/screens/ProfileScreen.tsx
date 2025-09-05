@@ -11,9 +11,9 @@ import { theme } from '../theme';
 
 export default function ProfileScreen() {
   const profileData = {
-    name: 'John Doe',
-    email: 'john.doe@edureach.com',
-    phone: '+91 98765 43210',
+    name: 'Saad Rehman',
+    email: 'saadrehman17100@gmail.com',
+    phone: '+92 3150777326',
     employeeId: 'EMP001',
     department: 'Education Outreach',
     joinDate: '2023-01-15',
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: theme.typography.fontSize['2xl'],
-    fontWeight: theme.typography.fontWeight.bold,
+    fontWeight: '700' as const,
     color: theme.colors.textPrimary,
   },
   profileCard: {
@@ -133,12 +133,12 @@ const styles = StyleSheet.create({
   },
   avatarText: {
     fontSize: theme.typography.fontSize['2xl'],
-    fontWeight: theme.typography.fontWeight.bold,
+    fontWeight: '700' as const,
     color: theme.colors.white,
   },
   profileName: {
     fontSize: theme.typography.fontSize.xl,
-    fontWeight: theme.typography.fontWeight.semiBold,
+    fontWeight: '600' as const,
     color: theme.colors.textPrimary,
     marginBottom: theme.spacing.xs,
   },
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
   profileRole: {
     fontSize: theme.typography.fontSize.sm,
     color: theme.colors.primary,
-    fontWeight: theme.typography.fontWeight.medium,
+    fontWeight: '500' as const,
   },
   infoCard: {
     backgroundColor: theme.colors.background,
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
   },
   infoTitle: {
     fontSize: theme.typography.fontSize.lg,
-    fontWeight: theme.typography.fontWeight.semiBold,
+    fontWeight: '600' as const,
     color: theme.colors.textPrimary,
     marginBottom: theme.spacing.md,
   },
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
   },
   infoValue: {
     fontSize: theme.typography.fontSize.base,
-    fontWeight: theme.typography.fontWeight.medium,
+    fontWeight: '500' as const,
     color: theme.colors.textPrimary,
   },
   section: {
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: theme.typography.fontSize.lg,
-    fontWeight: theme.typography.fontWeight.semiBold,
+    fontWeight: '600' as const,
     color: theme.colors.textPrimary,
     marginBottom: theme.spacing.md,
   },
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
   menuTitle: {
     flex: 1,
     fontSize: theme.typography.fontSize.base,
-    fontWeight: theme.typography.fontWeight.medium,
+    fontWeight: '500' as const,
     color: theme.colors.textPrimary,
   },
   menuArrow: {
@@ -243,6 +243,6 @@ const styles = StyleSheet.create({
   logoutButtonText: {
     color: theme.colors.white,
     fontSize: theme.typography.fontSize.lg,
-    fontWeight: theme.typography.fontWeight.semiBold,
+    fontWeight: '600' as const,
   },
 });

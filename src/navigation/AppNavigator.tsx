@@ -11,6 +11,7 @@ import SalaryScreen from '../screens/SalaryScreen';
 import VisitsScreen from '../screens/VisitsScreen';
 import OrdersScreen from '../screens/OrdersScreen';
 import OdometerScreen from '../screens/OdometerScreen';
+import GpsLogsScreen from '../screens/GpsLogsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 
 export type RootStackParamList = {
@@ -21,6 +22,7 @@ export type RootStackParamList = {
   Visits: undefined;
   Orders: undefined;
   Odometer: undefined;
+  GpsLogs: undefined;
   Profile: undefined;
 };
 
@@ -94,6 +96,13 @@ export default function AppNavigator() {
           component={OdometerScreen}
           options={{
             title: 'Odometer & Proofs',
+          }}
+        />
+        <Stack.Screen
+          name="GpsLogs"
+          component={GpsLogsScreen}
+          options={{
+            title: 'Location Logs',
           }}
         />
         <Stack.Screen

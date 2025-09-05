@@ -27,6 +27,7 @@ export default function HomeScreen() {
     { title: 'Add Visit', icon: '📍', color: theme.colors.secondary, screen: 'Visits' },
     { title: 'Add Order', icon: '📋', color: theme.colors.info, screen: 'Orders' },
     { title: 'Odometer', icon: '🚗', color: theme.colors.warning, screen: 'Odometer' },
+    { title: 'GPS Logs', icon: '🗺️', color: theme.colors.success, screen: 'GpsLogs' },
   ];
 
   return (
